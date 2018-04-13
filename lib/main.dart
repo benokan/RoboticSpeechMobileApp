@@ -9,12 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 // Gökhan'ın sorusu -> Bu paneli py ile değil de Web'de yazsak olur mu ?
 //
 
-//final FirebaseApp app = FirebaseApp(
-//      options: FirebaseOptions(
-//    googleAppID: '1:145247734917:android:49fe489faca05431',
-//    apiKey: 'AIzaSyAZ8zAZRjKzdaygFwYa8e-jV5B-vGmnKgY',
-//    databaseURL: 'https://robotic-speech.firebaseio.com',
-//  ));
+
 
 
 void main(){
