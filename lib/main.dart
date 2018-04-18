@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'welcomePage.dart';
+import 'remoteControlPage.dart';
 
-// admin panelinde cevapları bilinmeyen sorular listelenecek oradan cevaplarını yazabileceğiz. Sufle verilebilir, kullanıcı adı söylenebilir,
-// Gökhan'ın sorusu -> Bu paneli py ile değil de Web'de yazsak olur mu ?
-//
-
-
-
-
-void main(){
+void main() {
   runApp(new MaterialApp(
-    home: new MyHomePage(),
-    routes: <String,WidgetBuilder>{
-      "/SecondPage": (BuildContext context) => new SecondPage()
-    }
+      home: new MyHomePage(),
+      routes: <String, WidgetBuilder>{
+        "/WelcomePage": (BuildContext context) => new welcomePage(),
+        "/SoufflePage": (BuildContext context) => new SoufflePage(),
+        "/RemoteControlPage": (BuildContext context) => new remoteControlPage(),
+        "/HomePage": (BuildContext context) => new MyHomePage(),
+      }
   ));
 }
 
-class MyApp extends StatelessWidget{
+
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,30 @@ class MyApp extends StatelessWidget{
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) :super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => new _MyHomePageState();
+}
+
+class _MyHomePageState extends State <MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _decreaseCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
+
 
   final FirebaseDatabase _fireBase = FirebaseDatabase.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -49,47 +70,53 @@ class MyHomePage extends StatelessWidget {
 
     FirebaseUser user = await _auth.signInWithGoogle(
         idToken: gSA.idToken, accessToken: gSA.accessToken);
-    print("User Name: ${user.displayName}");
+    print("User Name: ${user.displayName}"); // Console log
+    if (user.displayName == "Benokan Kafkas" ||
+        user.displayName == "Mustafa Teyfik Avkan" ||
+        user.displayName == "Gökhan Tok" ||
+        user.displayName == "Gazihan Alankuş") {
+      Navigator.of(context).pushNamed("/WelcomePage");
+    }
 
-    Navigator.of(context).pushNamed("/SecondPage");
     return user;
   }
 
-  void signOut(){
+  void signOut() {
     googleSignIn.signOut();
     print("User Signed out");
   }
 
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title:new Text("Firebase Demo"),
+        title: new Text("Firebase Demo"),
       ),
       body: new Padding(
         padding: const EdgeInsets.all(20.0),
         child: new Column(
-          mainAxisAlignment:MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children:<Widget>[
+          children: <Widget>[
             new RaisedButton( // button1 - SignIn
-              onPressed:() => signIn(context)
-                .then((FirebaseUser user) => print(user))
-                .catchError((e) => print(e)),
+              onPressed: () =>
+                  signIn(context)
+                      .then((FirebaseUser user) => print(user))
+                      .catchError((e) => print(e)),
               child: new Text("Sign in"),
               color: Colors.green,
-            ),//RaisedButton1
+            ), //RaisedButton1
             new Padding(
               padding: const EdgeInsets.all(10.0),
             ),
             new RaisedButton(
               onPressed: signOut,
-              child:new Text("Sign out"),
+              child: new Text("Sign out"),
               color: Colors.red,
-            ),// RaisedButton2
-          ],//<Widget>[]
-        ),// Column
+            ), // RaisedButton2
+          ], //<Widget>[]
+        ), // Column
       ), // Padding
     ); // Scaffold
   }
@@ -99,15 +126,18 @@ class MyHomePage extends StatelessWidget {
 
 class FbDataEntry {
   String facedetected;
+  String location;
   String souffle;
   String whoiam;
 
 
-  FbDataEntry(this.facedetected, this.souffle, this.whoiam);
+
+  FbDataEntry(this.facedetected,this.location, this.souffle, this.whoiam);
 
   toJson() {
     return {
       "facedetected": facedetected,
+      "location": location,
       "souffle": souffle,
       "whoiam": whoiam
     };
@@ -115,53 +145,53 @@ class FbDataEntry {
 
 }
 
+class SoufflePage extends StatefulWidget {
+  SoufflePage({Key key, this.title}) :super(key: key);
 
-class SecondPage extends StatelessWidget {
-  static TextEditingController _controller = new TextEditingController();
-  FbDataEntry entry = new FbDataEntry("no", _controller.text, "kullanıcı");
-  final reference = FirebaseDatabase.instance.reference();
-  final mh = new MyHomePage();
-
-  void x(){
-    var a =reference.push().set(entry.toJson());
-    print(a);
-  }
-
-
-  void _pushEdit(FbDataEntry ent) {
-   reference.child('').set(ent.toJson());
-  }
+  final String title;
 
   @override
+  _SoufflePageState createState() => new _SoufflePageState();
+}
 
-  Widget build(BuildContext context){
+
+class _SoufflePageState extends State <SoufflePage> {
+
+  static TextEditingController _controller = new TextEditingController();
+  final reference = FirebaseDatabase.instance.reference();
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
     return new Scaffold(
-      appBar:new AppBar(title: new Text("Welcome To Souffle Page")),
+      appBar: new AppBar(title: new Text("Welcome To Souffle Page")),
       body: new Padding(
         padding: const EdgeInsets.all(20.0),
         child: new Column(
-          mainAxisAlignment:MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children:<Widget>[
+          children: <Widget>[
             new TextField(
               controller: _controller,
               decoration: new InputDecoration(
-              hintText: 'Type Souffle Here',
+                hintText: 'Type Souffle Here',
               ),
-            ),//TextField
+            ), //TextField
             new RaisedButton(
-
-                onPressed: () => _pushEdit(entry) // This will update my db information
-              ,
-
+              onPressed: () { // This will update my db information
+                FbDataEntry entry = new FbDataEntry(
+                    "no","nolocation", _controller.text, "kullanıcı");
+                reference.child('').set(entry.toJson());
+              },
               child: new Text('Type your souffle here'),
             ),
-
             new Padding(
               padding: const EdgeInsets.all(10.0),
             ),
-          ],//<Widget>[]
-        ),// Column
+          ], //<Widget>[]
+        ), // Column
       ), // Padding
     );
   }
