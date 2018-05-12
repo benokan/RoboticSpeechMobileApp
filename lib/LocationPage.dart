@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'main.dart';
 
-// waitlocation'ı değiştirmek için ayrı bir buton yap...
-
 class LocationPage extends StatefulWidget {
 
   @override
@@ -17,19 +15,18 @@ class LocationPageState extends State<LocationPage> {
 
   final reference = FirebaseDatabase.instance.reference();
 
-  // Sufle variable to print
-
-
   // variables for creating the new dropdownButton
   String _value = null;
   List <String> _values = new List<String>();
+
   // to show in app only
-  String temp=null ;
+  String temp = null;
+
 
   void _onChanged(String value) {
     setState(() {
       _value = value;
-      temp =_value;
+      temp = _value;
     });
 
     FbDataEntryLocationOnly entry = new FbDataEntryLocationOnly(_value);
@@ -37,18 +34,56 @@ class LocationPageState extends State<LocationPage> {
   }
 
 
-
   @override
   void initState() {
-    _values.addAll(['location1', 'location2', 'location3','location4','location5','location6','location7','location8','locaiton9','nolocation']);
+    _values.addAll([
+      'location1',
+      'location2',
+      'location3',
+      'location4',
+      'location5',
+      'location6',
+      'location7',
+      'location8',
+      'location9',
+      'location10'
+    ]);
     _value = _values.elementAt(0);
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+    Widget myInitLocationValueWidget = new Container(
+      child: new StreamBuilder(
+        stream: FirebaseDatabase.instance
+            .reference()
+            .child('location')
+            .onValue,
+        builder: (BuildContext context, AsyncSnapshot<Event> event) {
+          if (!event.hasData)
+            return new Center(child: new Text('Loading...'));
+          String location = event.data.snapshot.value;
+          return new Center(
+              child: new Text(
+                "Value at the firebase now : " + location,
+                style: new TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.deepOrangeAccent,
+                ),
+                textAlign: TextAlign.center,
+              )
+          );
+        },
+
+      ),
+    );
+
+
     return new Scaffold(
-        appBar: new AppBar(title: new Text("Locations Page"),backgroundColor: Colors.deepOrangeAccent,),
+        appBar: new AppBar(title: new Text("Locations Page"),
+          backgroundColor: Colors.deepOrangeAccent,),
         body: new Padding(padding: new EdgeInsets.all(2.0),
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -57,23 +92,16 @@ class LocationPageState extends State<LocationPage> {
               children: <Widget>[
                 new Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child:new Image.asset('images/firebase.png',height: 100.0,width:200.0),
+                  child: new Image.asset(
+                      'images/firebase.png', height: 100.0, width: 200.0),
                 ),
                 new GestureDetector(
                   child: new Container(
                     child: new Center(
 
 
-                      child:(temp==null) ?
-                      new Text(
-                        "Location you've sent to Firebase is\n\n Not initialized yet",
-                        style: new TextStyle(
-                          fontSize: 24.0,
-                          color: Colors.deepOrangeAccent,
-                        ),
-                        textAlign: TextAlign.center,
-
-                      ) :  new Text(
+                      child: (temp == null) ?
+                      myInitLocationValueWidget : new Text(
                         "Location at Firebase is\n\n$temp",
                         style: new TextStyle(
                           fontSize: 24.0,
@@ -121,7 +149,7 @@ class LocationPageState extends State<LocationPage> {
                       FbDataEntry entry = new FbDataEntry(
                           "no", "nolocation", "sufle yok", "no", "kullanıcı");
                       reference.child('').set(entry.toJson());
-                      setState((){
+                      setState(() {
                         temp = "nolocation";
                       });
                     },

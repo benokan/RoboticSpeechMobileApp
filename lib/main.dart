@@ -252,6 +252,30 @@ class _SoufflePageState extends State <SoufflePage> {
   @override
   Widget build(BuildContext context) {
 
+    Widget myInitSouffleWidget = new Container(
+      child: new StreamBuilder(
+        stream: FirebaseDatabase.instance
+            .reference()
+            .child('souffle')
+            .onValue,
+        builder: (BuildContext context, AsyncSnapshot<Event> event) {
+          if (!event.hasData)
+            return new Center(child: new Text('Loading...'));
+          String souffle = event.data.snapshot.value;
+          return new Center(
+              child: new Text(
+                "Souffle at the firebase now : " + souffle,
+                style: new TextStyle(
+                  fontSize: 24.0,
+                  color: Colors.deepOrangeAccent,
+                ),
+                textAlign: TextAlign.center,
+              )
+          );
+        },
+
+      ),
+    );
 
     Widget myImage = new Image.asset(
         'images/firebase.png',
@@ -269,15 +293,7 @@ class _SoufflePageState extends State <SoufflePage> {
       child: new Center(
           child:(temp==null) ?
 
-          new Text(
-            "Souffle you've sent to Firebase is\n\n Not initialized yet",
-            style: new TextStyle(
-              fontSize: 24.0,
-              color: Colors.deepOrangeAccent,
-            ),
-            textAlign: TextAlign.center,
-
-          ) :  new Text(
+          myInitSouffleWidget :  new Text(
             "Souffle at Firebase is\n\n$temp",
             style: new TextStyle(
               fontSize: 24.0,
