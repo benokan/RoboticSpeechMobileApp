@@ -153,7 +153,7 @@ class CeydaState extends State<Ceyda> {
 
   void getAngry() {
     // will check if there's an angry word or not
-    codeToCeyda = "Bana küs müsün?";
+    codeToCeyda = "getbadsentence";
     botConnection();
   }
 
