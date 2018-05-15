@@ -31,7 +31,7 @@ class remoteControlPage extends StatelessWidget {
               icon: new Icon(Icons.rotate_left),
               onPressed: () => {}, // Functions will come here
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
 
             ),
           ),
@@ -43,7 +43,7 @@ class remoteControlPage extends StatelessWidget {
               icon: new Icon(Icons.keyboard_arrow_up),
               onPressed: () => {}, // Functions will come here
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
 
             ),
           ),
@@ -56,7 +56,7 @@ class remoteControlPage extends StatelessWidget {
               icon: new Icon(Icons.rotate_right),
               onPressed: () => {}, // Functions will come here
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
             ),
           )
         ],
@@ -84,7 +84,7 @@ class remoteControlPage extends StatelessWidget {
               icon: new Icon(Icons.keyboard_arrow_left),
               onPressed: () => {}, // Functions will come here
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
 
             ),
           ),
@@ -105,7 +105,7 @@ class remoteControlPage extends StatelessWidget {
               icon: new Icon(Icons.keyboard_arrow_right),
               onPressed: () => {}, // Functions will come here
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
             ),
           )
         ],
@@ -125,7 +125,7 @@ class remoteControlPage extends StatelessWidget {
           child: new IconButton(icon: new Icon(Icons.keyboard_arrow_down),
               onPressed: () => {},
               iconSize: 90.0,
-              splashColor: Colors.blue,
+              splashColor: Colors.deepOrangeAccent,
             ),
         )
         ],

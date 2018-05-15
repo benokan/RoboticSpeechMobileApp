@@ -11,17 +11,29 @@ class LocationPage extends StatefulWidget {
 
 }
 
+
 class LocationPageState extends State<LocationPage> {
 
   final reference = FirebaseDatabase.instance.reference();
 
   // variables for creating the new dropdownButton
   String _value = null;
+  String _nameValue = null;
   List <String> _values = new List<String>();
+  List <String> _valuesNames = new List<String>();
 
   // to show in app only
   String temp = null;
 
+  int findindex(String text) {
+    int index = 0;
+    for (int i = 0; i < _values.length; i++) {
+      if (_values[i] == text) {
+        index = i;
+      }
+    }
+    return index;
+  }
 
   void _onChanged(String value) {
     setState(() {
@@ -30,13 +42,25 @@ class LocationPageState extends State<LocationPage> {
     });
 
     FbDataEntryLocationOnly entry = new FbDataEntryLocationOnly(_value);
-    reference.child('location').set(_value);
+    reference.child('location').set(_valuesNames[findindex(value)]);
   }
-
 
   @override
   void initState() {
     _values.addAll([
+      'location1 Robotik ve mekanik lab',
+      'location2 bilgisayar oyunları tasarım lab',
+      'location3 bilgisayar lab',
+      'location4 moleküler araştırma lab',
+      'location5 endüstri 4.0 lab',
+      'location6 biyomedikal lab',
+      'location7 elektrik ve kontrol lab',
+      'location8 temiz oda',
+      'location9 uzay ve uçak lab',
+      'location10 çizim ve tasarım lab'
+    ]);
+
+    _valuesNames.addAll([
       'location1',
       'location2',
       'location3',
@@ -48,13 +72,14 @@ class LocationPageState extends State<LocationPage> {
       'location9',
       'location10'
     ]);
+
+
     _value = _values.elementAt(0);
   }
 
 
   @override
   Widget build(BuildContext context) {
-
     Widget myInitLocationValueWidget = new Container(
       child: new StreamBuilder(
         stream: FirebaseDatabase.instance
@@ -129,7 +154,8 @@ class LocationPageState extends State<LocationPage> {
                         child: new Row(
                           children: [
                             new Icon(Icons.send),
-                            new Text('Templates:${value}'),
+                            new Text(' ${value}'),
+
                           ],
                         ),
                       );

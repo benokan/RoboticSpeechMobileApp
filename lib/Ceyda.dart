@@ -87,7 +87,7 @@ Future <Post> getAngryWordQuery() async {
   var values =
   {"username": "gokhantok",
     "token": "57afc561f880eb8bfcbdf61821ea8626",
-    "code": "Bana küs müsün?"};
+    "code": "getbadsentence"};
 
 
   var response = await http.post(
@@ -153,7 +153,7 @@ class CeydaState extends State<Ceyda> {
 
   void getAngry() {
     // will check if there's an angry word or not
-    codeToCeyda = "Bana küs müsün?";
+    codeToCeyda = "getbadsentence";
     botConnection();
   }
 
